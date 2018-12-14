@@ -1,0 +1,268 @@
+<?php
+   	  
+
+
+   $conn = mysqli_connect("holland.mathcs.emory.edu","cs377", "abc123");
+   	  
+   if (mysqli_connect_errno())            # -----------  check connection error
+   {      
+      printf("Connect failed: %s\n", mysqli_connect_error());
+      exit(1);
+   }       
+   	  
+   if ( ! mysqli_select_db($conn, "spjDB") )          # Select DB
+   {      
+      printf("Error: %s\n", mysqli_error($conn));
+      exit(1);
+   }      
+   	
+	$pname = $_POST['pname'];
+	$jname = $_POST['jname'];
+	$scity = $_POST['scity'];
+	$pcity = $_POST['pcity'];
+	$jcity = $_POST['jcity'];
+	$sname = $_POST['sname'];
+    
+   $query = "select sname, supplier.city as 'Supplier City', pname, part.city as 'Part City', jname, proj.city as 'Project City', qty 
+		from supplier, spj, proj, part 
+		where spj.snum = supplier.snum
+		and spj.jnum = proj.jnum
+		and spj.pnum = part.pnum";
+
+	if($sname != ""){
+		$boolean = false;
+		for ( $i = 0; $i < strlen($sname); $i++ ) {
+			if( $sname[$i] == '*'){
+				$sname[$i] = '%';
+				# $query = $query . " and supplier.city LIKE '" . (string)($scity) . "'";
+				$boolean = true;
+			}
+			if ( $sname[$i] == '?'){
+				$sname[$i] = '_';
+				# $query = $query . " and supplier.city LIKE '" . (string)($scity) . "'";
+				$boolean = true;
+			}
+		}
+		if($boolean == true){
+			$query = $query . " and sname LIKE '" . (string)($sname) . "'";
+		}
+
+		if($boolean == false){
+			$query = $query . " and sname = '" . (string)($sname) . "'";
+		}
+	}
+
+
+
+	if($pname != ""){
+		$boolean = false;
+		for ( $i = 0; $i < strlen($pname); $i++ ) {
+			if( $pname[$i] == '*'){
+				$pname[$i] = '%';
+				# $query = $query . " and supplier.city LIKE '" . (string)($scity) . "'";
+				$boolean = true;
+			}
+			if ( $pname[$i] == '?'){
+				$pname[$i] = '_';
+				# $query = $query . " and supplier.city LIKE '" . (string)($scity) . "'";
+				$boolean = true;
+			}
+		}
+		if($boolean == true){
+			$query = $query . " and pname LIKE '" . (string)($pname) . "'";
+		}
+
+		if($boolean == false){
+			$query = $query . " and pname = '" . (string)($pname) . "'";
+		}
+	}
+
+
+
+	if($jname != ""){
+		$boolean = false;
+		for ( $i = 0; $i < strlen($jname); $i++ ) {
+			if( $jname[$i] == '*'){
+				$jname[$i] = '%';
+				# $query = $query . " and jname LIKE '" . (string)($scity) . "'";
+				$boolean = true;
+			}
+			if ( $jname[$i] == '?'){
+				$jname[$i] = '_';
+				# $query = $query . " and supplier.city LIKE '" . (string)($scity) . "'";
+				$boolean = true;
+			}
+		}
+		if($boolean == true){
+			$query = $query . " and jname LIKE '" . (string)($jname) . "'";
+		}
+
+		if($boolean == false){
+			$query = $query . " and jname = '" . (string)($jname) . "'";
+		}
+	}
+
+
+
+	if($scity != ""){
+		$boolean = false;
+		for ( $i = 0; $i < strlen($scity); $i++ ) {
+			if( $scity[$i] == '*'){
+				$scity[$i] = '%';
+				# $query = $query . " and supplier.city LIKE '" . (string)($scity) . "'";
+				$boolean = true;
+			}
+			if ( $scity[$i] == '?'){
+				$scity[$i] = '_';
+				# $query = $query . " and supplier.city LIKE '" . (string)($scity) . "'";
+				$boolean = true;
+			}
+		}
+		if($boolean == true){
+			$query = $query . " and supplier.city LIKE '" . (string)($scity) . "'";
+		}
+
+		if($boolean == false){
+			$query = $query . " and supplier.city = '" . (string)($scity) . "'";
+		}
+	}
+
+
+
+	if($pcity != ""){
+		$boolean = false;
+		for ( $i = 0; $i < strlen($pcity); $i++ ) {
+			if( $pcity[$i] == '*'){
+				$pcity[$i] = '%';
+				# $query = $query . " and supplier.city LIKE '" . (string)($scity) . "'";
+				$boolean = true;
+			}
+			if ( $pcity[$i] == '?'){
+				$pcity[$i] = '_';
+				# $query = $query . " and supplier.city LIKE '" . (string)($scity) . "'";
+				$boolean = true;
+			}
+		}
+		if($boolean == true){
+			$query = $query . " and part.city LIKE '" . (string)($pcity) . "'";
+		}
+
+		if($boolean == false){
+			$query = $query . " and part.city = '" . (string)($pcity) . "'";
+		}
+	}
+
+
+
+	if($jcity != ""){
+		$boolean = false;
+		for ( $i = 0; $i < strlen($jcity); $i++ ) {
+			if( $jcity[$i] == '*'){
+				$jcity[$i] = '%';
+				# $query = $query . " and supplier.city LIKE '" . (string)($scity) . "'";
+				$boolean = true;
+			}
+			if ( $jcity[$i] == '?'){
+				$jcity[$i] = '_';
+				# $query = $query . " and supplier.city LIKE '" . (string)($scity) . "'";
+				$boolean = true;
+			}
+		}
+		if($boolean == true){
+			$query = $query . " and proj.city LIKE '" . (string)($jcity) . "'";
+		}
+
+		if($boolean == false){
+			$query = $query . " and proj.city = '" . (string)($jcity) . "'";
+		}
+	}
+
+
+
+/* for ( $i = 0; $i < strlen($query); $i++ )                   
+      {
+   	  if ( $query[$i] == '*' ){
+   	     $query[$i] = '%';
+	     substr_replace("=", "L" , $query[$i-4]);
+	    # $query[$i-4] = 'LIKE';
+	}
+      } */
+print($query);
+
+/*		and sname = '"  . (string)($_POST['sname']) . "' and supplier.city = '" . (string)($_POST['scity']) . "' and jname ='" . (string)($_POST['jname']) . "'";   # Get the query input from the webpage
+
+*/
+   
+
+/*   print("<UL><TABLE bgcolor=\"#FFEEEE\" BORDER=\"5\">\n");
+   print("<TR> <TD><FONT color=\"blue\"><B><PRE>\n");
+   print( $sname );   # echo the query 
+   print("</PRE></B></FONT></TD></TR></TABLE></UL>\n");
+   print("<P><HR><P>\n");
+
+*/
+   	  
+   if ( ! ( $result = mysqli_query($conn, $query)) )      # Execute query
+   {      
+      printf("Error: %s\n", mysqli_error($conn));
+      exit(1);
+   }      
+   	  
+   print("<UL>\n");
+   print("<TABLE bgcolor=\"lightyellow\" BORDER=\"5\">\n");
+   	  
+   $printed = false;
+   
+   while ( $row = mysqli_fetch_assoc( $result ) )
+   {      
+      if (( ! $printed ))
+      {   
+   	 $printed = true;                 # Print header once...
+   	  
+   	 print("<TR bgcolor=\"lightcyan\">\n");
+   	 foreach ($row as $key => $value)
+   	 {
+	if ($key == 'sname') {
+   	    print ("<TH>" . "Supplier Name" . "</TH>");             # Print attr. name
+	}
+	if ($key == 'Supplier City') {
+   	    print ("<TH>" . "Supplier City" . "</TH>"); 
+	}
+	if ($key == 'jname') {
+   	    print ("<TH>" . "Project Name" . "</TH>");             # Print attr. name
+	}
+	if ($key == 'pname') {
+   	    print ("<TH>" . "Part Name" . "</TH>"); 
+	}
+	if ($key == 'Part City') {
+   	    print ("<TH>" . "Part City" . "</TH>");             # Print attr. name
+	}
+	if ($key == 'Project City') {
+   	    print ("<TH>" . "Supplier City" . "</TH>"); 
+	}
+	if ($key == 'qty'){
+	    print ("<TH>" . "Quantity Shipped" . "</TH>"); 
+	}
+   	 }
+   	 print ("</TH>\n");
+      }   
+   	  
+   	  
+      print("<TR>\n");
+      foreach ($row as $key => $value)
+      {  
+	# if ( ($key == 'sname') or $key == ('city') or $key == ('jname')){
+   	 print ("<TD>" . $value . "</TD>");
+	# }
+      }   
+      print ("</TR>\n");
+   }      
+   print("</TABLE>\n");
+   print("</UL>\n");
+   print("<P>\n");
+   	  
+   mysqli_free_result($result);
+   	  
+   mysqli_close($conn);
+
+   ?>     
